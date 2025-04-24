@@ -2,129 +2,181 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Hero Carousel M3 Snap</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hero Carousel MD3</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Segoe UI', sans-serif; background: #f8f9fa; }
 
-    .carousel-container {
-      overflow-x: scroll;
-      scroll-snap-type: x mandatory;
+
+    :root{
+    --radius:28px;
+
+    }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f5f5f5;
       display: flex;
-      gap: 1rem;
-      padding: 1rem;
-      height: 400px;
-      scroll-behavior: smooth;
-      -webkit-overflow-scrolling: touch;
-      scroll-padding: 1rem;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
     }
 
-    .carousel-container::-webkit-scrollbar {
-      display: none;
+    .carousel {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 400px;
+  margin: 0 auto;
+  padding: 0px 14px 0px 0px;
+}
+.carrusel{
+  overflow: hidden;
+  padding: 0 14px;
+  max-width: 1920px;
+}
+
+    .carousel-track {
+      display: flex;
+      transition: transform 600ms cubic-bezier(0.22, 1, 0.36, 1); /* suave estilo iOS */
+      height: 100%;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      padding: 0rem 1px;
     }
 
     .card {
-      flex: 0 0 80%;
-      scroll-snap-align: start;
-      border-radius: 1rem;
-      background: #eee;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
-      transition: all 0.4s ease;
       position: relative;
+      flex: 0 0 80%;
+      margin-right: 1rem;
+      border-radius: var(--radius);
       overflow: hidden;
+      background: #ddd;
+      transition: flex 0.5s ease-in-out;
     }
 
-    .card.secondary {
+    .card.next {
       flex: 0 0 20%;
-      opacity: 0.6;
-      transform: scale(0.95);
     }
 
     .card img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      display: block;
+      object-position: center;
     }
 
-    .overlay {
+    .card .overlay {
       position: absolute;
       bottom: 0;
       width: 100%;
-      padding: 1rem;
-      background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+      background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);
       color: white;
+      padding: 1rem;
+      font-size: 1.1rem;
     }
+    .card.next .overlay {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.card.active .overlay {
+  opacity: 1;
+}
 
-    .overlay h2 {
-      font-size: 1.2rem;
-      margin-bottom: 0.3rem;
-    }
-
-    .overlay p {
-      font-size: 0.9rem;
-      opacity: 0.85;
-    }
-
-    @media (min-width: 768px) {
-      .carousel-container {
-        overflow: hidden;
-        height: auto;
-        flex-wrap: wrap;
-        justify-content: center;
+    @media(min-width: 768px) {
+      .carousel {
+        padding-left: 0;
       }
-
-      .card {
-        flex: 1 0 250px;
-        max-width: 300px;
-        opacity: 1 !important;
-        height: 300px;
-        scroll-snap-align: none;
+      .carousel-track {
+        gap: 1rem;
       }
-
-      .card.secondary {
-        flex: 1 0 250px;
-        transform: none;
+      .card, .card.next {
+        flex: 1 1 0%;
       }
     }
   </style>
 </head>
 <body>
-
-  <div class="carousel-container" id="carousel">
-    <div class="card"><img src="/HOME/img/blog-139.jpg" alt=""><div class="overlay"><h2>Card 1</h2><p>Explora inspiración</p></div></div>
-    <div class="card secondary"><img src="/HOME/img/blog-140.jpg" alt=""><div class="overlay"><h2>Card 2</h2><p>Tendencias actuales</p></div></div>
-    <div class="card"><img src="/HOME/img/blog-141.jpg" alt=""><div class="overlay"><h2>Card 3</h2><p>Creatividad visual</p></div></div>
-    <div class="card secondary"><img src="/HOME/img/blog-142.jpg" alt=""><div class="overlay"><h2>Card 4</h2><p>Estilo moderno</p></div></div>
-    <div class="card"><img src="/HOME/img/blog-143.jpg" alt=""><div class="overlay"><h2>Card 5</h2><p>Diseño funcional</p></div></div>
+  <section class="carrusel">
+  <div class="carousel" id="carousel">
+    <div class="carousel-track" id="track">
+      <div class="card active">
+        <img src="/HOME/img/blog-139.jpg" alt="">
+        <div class="overlay">Artículo 1</div>
+      </div>
+      <div class="card next">
+        <img src="/HOME/img/blog-140.jpg" alt="">
+        <div class="overlay">Artículo 2</div>
+      </div>
+      <div class="card">
+        <img src="/HOME/img/blog-141.jpg" alt="">
+        <div class="overlay">Artículo 3</div>
+      </div>
+      <div class="card">
+        <img src="/HOME/img/blog-142.jpg" alt="">
+        <div class="overlay">Artículo 4</div>
+      </div>
+      <div class="card">
+        <img src="/HOME/img/blog-143.jpg" alt="">
+        <div class="overlay">Artículo 5</div>
+      </div>
+    </div>
   </div>
-
+</section>
+ 
   <script>
-    const carousel = document.getElementById('carousel');
+    const track = document.getElementById('track');
+    const cards = Array.from(track.children);
+    let current = 0;
+  
+    function updateCarousel() {
+  cards.forEach(card => card.classList.remove('active', 'next'));
 
-    function updateCards() {
-      const cards = Array.from(carousel.querySelectorAll('.card'));
-      const scrollLeft = carousel.scrollLeft;
-      const containerWidth = carousel.offsetWidth;
+  if (current === cards.length - 1) {
+    // última card: penúltima al 20%, última al 80%
+    cards[current - 1]?.classList.add('next');    // 20%
+    cards[current]?.classList.add('active');      // 80%
+  } else {
+    cards[current]?.classList.add('active');      // 80%
+    cards[current + 1]?.classList.add('next');    // 20%
+  }
 
-      cards.forEach((card, i) => {
-        const cardLeft = card.offsetLeft;
-        const distance = Math.abs(cardLeft - scrollLeft);
-        if (distance < containerWidth * 0.3) {
-          card.classList.remove('secondary');
-        } else {
-          card.classList.add('secondary');
-        }
-      });
+  const cardWidth = track.offsetWidth * 0.8 + 16;
+  const offset = current >= cards.length - 1
+    ? (current - 1) * cardWidth // última card, mover a penúltima
+    : current * cardWidth;
+  
+  track.style.transform = `translateX(-${offset}px)`;
+}
+
+    function nextCard() {
+      if (current < cards.length - 1) {
+        current++;
+        updateCarousel();
+      }
     }
-
-    carousel.addEventListener('scroll', () => {
-      window.requestAnimationFrame(updateCards);
+  
+    function prevCard() {
+      if (current > 0) {
+        current--;
+        updateCarousel();
+      }
+    }
+  
+    // Swipe soporte
+    let startX = 0;
+    track.addEventListener('touchstart', e => startX = e.touches[0].clientX);
+    track.addEventListener('touchend', e => {
+      let endX = e.changedTouches[0].clientX;
+      if (startX - endX > 50) nextCard();
+      else if (endX - startX > 50) prevCard();
     });
-
-    window.addEventListener('load', updateCards);
-    window.addEventListener('resize', updateCards);
+  
+    window.addEventListener('resize', updateCarousel);
+    window.addEventListener('load', updateCarousel);
   </script>
+  
+
+
 </body>
 </html>
