@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Hero Carousel M3 Snap</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', sans-serif; background: #f8f9fa; }
+
+    .carousel-container {
+      overflow-x: scroll;
+      scroll-snap-type: x mandatory;
+      display: flex;
+      gap: 1rem;
+      padding: 1rem;
+      height: 400px;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      scroll-padding: 1rem;
+    }
+
+    .carousel-container::-webkit-scrollbar {
+      display: none;
+    }
+
+    .card {
+      flex: 0 0 80%;
+      scroll-snap-align: start;
+      border-radius: 1rem;
+      background: #eee;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card.secondary {
+      flex: 0 0 20%;
+      opacity: 0.6;
+      transform: scale(0.95);
+    }
+
+    .card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .overlay {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      padding: 1rem;
+      background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+      color: white;
+    }
+
+    .overlay h2 {
+      font-size: 1.2rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .overlay p {
+      font-size: 0.9rem;
+      opacity: 0.85;
+    }
+
+    @media (min-width: 768px) {
+      .carousel-container {
+        overflow: hidden;
+        height: auto;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .card {
+        flex: 1 0 250px;
+        max-width: 300px;
+        opacity: 1 !important;
+        height: 300px;
+        scroll-snap-align: none;
+      }
+
+      .card.secondary {
+        flex: 1 0 250px;
+        transform: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="carousel-container" id="carousel">
+    <div class="card"><img src="/HOME/img/blog-139.jpg" alt=""><div class="overlay"><h2>Card 1</h2><p>Explora inspiración</p></div></div>
+    <div class="card secondary"><img src="/HOME/img/blog-140.jpg" alt=""><div class="overlay"><h2>Card 2</h2><p>Tendencias actuales</p></div></div>
+    <div class="card"><img src="/HOME/img/blog-141.jpg" alt=""><div class="overlay"><h2>Card 3</h2><p>Creatividad visual</p></div></div>
+    <div class="card secondary"><img src="/HOME/img/blog-142.jpg" alt=""><div class="overlay"><h2>Card 4</h2><p>Estilo moderno</p></div></div>
+    <div class="card"><img src="/HOME/img/blog-143.jpg" alt=""><div class="overlay"><h2>Card 5</h2><p>Diseño funcional</p></div></div>
+  </div>
+
+  <script>
+    const carousel = document.getElementById('carousel');
+
+    function updateCards() {
+      const cards = Array.from(carousel.querySelectorAll('.card'));
+      const scrollLeft = carousel.scrollLeft;
+      const containerWidth = carousel.offsetWidth;
+
+      cards.forEach((card, i) => {
+        const cardLeft = card.offsetLeft;
+        const distance = Math.abs(cardLeft - scrollLeft);
+        if (distance < containerWidth * 0.3) {
+          card.classList.remove('secondary');
+        } else {
+          card.classList.add('secondary');
+        }
+      });
+    }
+
+    carousel.addEventListener('scroll', () => {
+      window.requestAnimationFrame(updateCards);
+    });
+
+    window.addEventListener('load', updateCards);
+    window.addEventListener('resize', updateCards);
+  </script>
+</body>
+</html>
