@@ -3,37 +3,40 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Hero Carousel MD3</title>
+  <title>Hero Carousel MD3 Corregido</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
-
-    :root{
-    --radius:28px;
-
+    :root {
+      --radius: 28px;
     }
+
     body {
       font-family: 'Segoe UI', sans-serif;
       background: #f5f5f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
     }
 
     .carousel {
-  position: relative;
-  overflow: hidden;
-  width: 100%;
-  height: 400px;
-  margin: 0 auto;
-  padding: 0px 14px 0px 0px;
-}
-.carrusel{
-  overflow: hidden;
-  padding: 0 14px;
-  max-width: 1920px;
-}
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      height: 400px;
+      margin: 0 auto;
+      padding: 0px 14px 0px 0px;
+    }
+
+    .carrusel {
+      overflow: hidden;
+      padding: 0 14px;
+    }
 
     .carousel-track {
       display: flex;
-      transition: transform 600ms cubic-bezier(0.22, 1, 0.36, 1); /* suave estilo iOS */
+      transition: transform 600ms cubic-bezier(0.22, 1, 0.36, 1);
       height: 100%;
       scroll-snap-type: x mandatory;
       scroll-behavior: smooth;
@@ -59,6 +62,7 @@
       height: 100%;
       object-fit: cover;
       object-position: center;
+      pointer-events: none; /* Muy importante: permite que el swipe pase a la tarjeta */
     }
 
     .card .overlay {
@@ -69,17 +73,10 @@
       color: white;
       padding: 1rem;
       font-size: 1.1rem;
+      pointer-events: none; /* Igual, el swipe debe pasar a la tarjeta */
     }
-    .card.next .overlay {
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease;
-}
-.card.active .overlay {
-  opacity: 1;
-}
 
-    @media(min-width: 768px) {
+    @media (min-width: 768px) {
       .carousel {
         padding-left: 0;
       }
@@ -93,86 +90,103 @@
   </style>
 </head>
 <body>
-  <section class="carrusel">
+
+<section class="carrusel">
   <div class="carousel" id="carousel">
     <div class="carousel-track" id="track">
       <div class="card active">
-        <img src="img/blog-139.jpg" alt="">
+        <img src="/HOME/img/blog-139.jpg" alt="">
         <div class="overlay">Artículo 1</div>
       </div>
       <div class="card next">
-        <img src="img/blog-140.jpg" alt="">
+        <img src="/HOME/img/blog-140.jpg" alt="">
         <div class="overlay">Artículo 2</div>
       </div>
       <div class="card">
-        <img src="img/blog-141.jpg" alt="">
+        <img src="/HOME/img/blog-141.jpg" alt="">
         <div class="overlay">Artículo 3</div>
       </div>
       <div class="card">
-        <img src="img/blog-142.jpg" alt="">
+        <img src="/HOME/img/blog-142.jpg" alt="">
         <div class="overlay">Artículo 4</div>
       </div>
       <div class="card">
-        <img src="img/blog-143.jpg" alt="">
+        <img src="/HOME/img/blog-143.jpg" alt="">
         <div class="overlay">Artículo 5</div>
       </div>
     </div>
   </div>
 </section>
- 
-  <script>
-    const track = document.getElementById('track');
-    const cards = Array.from(track.children);
-    let current = 0;
-  
-    function updateCarousel() {
-  cards.forEach(card => card.classList.remove('active', 'next'));
 
-  if (current === cards.length - 1) {
-    // última card: penúltima al 20%, última al 80%
-    cards[current - 1]?.classList.add('next');    // 20%
-    cards[current]?.classList.add('active');      // 80%
-  } else {
-    cards[current]?.classList.add('active');      // 80%
-    cards[current + 1]?.classList.add('next');    // 20%
+<script>
+  const carousel = document.getElementById('carousel');
+  const track = document.getElementById('track');
+  const cards = Array.from(track.children);
+  let current = 0;
+
+  function updateCarousel() {
+    cards.forEach(card => card.classList.remove('active', 'next'));
+
+    if (current === cards.length - 1) {
+      cards[current - 1]?.classList.add('next');
+      cards[current]?.classList.add('active');
+    } else {
+      cards[current]?.classList.add('active');
+      cards[current + 1]?.classList.add('next');
+    }
+
+    const cardWidth = track.offsetWidth * 0.8 + 16;
+    const offset = current >= cards.length - 1
+      ? (current - 1) * cardWidth
+      : current * cardWidth;
+
+    track.style.transform = `translateX(-${offset}px)`;
   }
 
-  const cardWidth = track.offsetWidth * 0.8 + 16;
-  const offset = current >= cards.length - 1
-    ? (current - 1) * cardWidth // última card, mover a penúltima
-    : current * cardWidth;
-  
-  track.style.transform = `translateX(-${offset}px)`;
-}
-
-    function nextCard() {
-      if (current < cards.length - 1) {
-        current++;
-        updateCarousel();
-      }
+  function nextCard() {
+    if (current < cards.length - 1) {
+      current++;
+      updateCarousel();
     }
-  
-    function prevCard() {
-      if (current > 0) {
-        current--;
-        updateCarousel();
-      }
-    }
-  
-    // Swipe soporte
-    let startX = 0;
-    track.addEventListener('touchstart', e => startX = e.touches[0].clientX);
-    track.addEventListener('touchend', e => {
-      let endX = e.changedTouches[0].clientX;
-      if (startX - endX > 50) nextCard();
-      else if (endX - startX > 50) prevCard();
-    });
-  
-    window.addEventListener('resize', updateCarousel);
-    window.addEventListener('load', updateCarousel);
-  </script>
-  
+  }
 
+  function prevCard() {
+    if (current > 0) {
+      current--;
+      updateCarousel();
+    }
+  }
+
+  // Swipe soporte completo
+  let startX = 0;
+  let startY = 0;
+  let isMoving = false;
+
+  carousel.addEventListener('touchstart', e => {
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+    isMoving = false;
+  }, { passive: true });
+
+  carousel.addEventListener('touchmove', e => {
+    const dx = e.touches[0].clientX - startX;
+    const dy = e.touches[0].clientY - startY;
+    if (Math.abs(dx) > Math.abs(dy)) {
+      e.preventDefault(); // Bloquea scroll vertical si es swipe horizontal
+      isMoving = true;
+    }
+  }, { passive: false });
+
+  carousel.addEventListener('touchend', e => {
+    if (!isMoving) return;
+    const endX = e.changedTouches[0].clientX;
+    if (startX - endX > 50) nextCard();
+    else if (endX - startX > 50) prevCard();
+  });
+
+  window.addEventListener('resize', updateCarousel);
+  window.addEventListener('load', updateCarousel);
+</script>
 
 </body>
 </html>
