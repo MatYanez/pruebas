@@ -3,55 +3,21 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Generador de Cartas</title>
+  <title>Mis Proyectos de Cartas</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="app-container">
-    <aside class="control-panel">
-      <h2>🎴 Generador de Carta</h2>
-      <label>
-        Nombre:
-        <input type="text" id="nombre" placeholder="Ej: Dragón Azul" />
-      </label>
+  <div class="home-container">
+    <header>
+      <h1>🃏 Mis Proyectos</h1>
+      <button id="nuevoProyectoBtn">+ Nuevo Proyecto</button>
+    </header>
 
-      <label>
-        Descripción:
-        <textarea id="descripcion" placeholder="Describe la carta..."></textarea>
-      </label>
-
-      <label>
-        Imagen (URL):
-        <input type="text" id="imagen" placeholder="https://..." />
-      </label>
-
-      <label>
-        Poder:
-        <input type="number" id="poder" min="0" max="999" placeholder="Ej: 85" />
-      </label>
-
-      <label>
-        Color de fondo:
-        <input type="color" id="colorFondo" value="#f1f2f6" />
-      </label>
-
-      <button id="resetBtn">Reiniciar</button>
-      <button id="exportBtn">Exportar como imagen</button>
-    </aside>
-
-    <main class="preview">
-      <div id="carta" class="carta">
-        <div class="carta-imagen"></div>
-        <div class="carta-info">
-          <h3 class="carta-nombre">Dragón Azul</h3>
-          <p class="carta-descripcion">Una criatura legendaria del cielo.</p>
-          <div class="carta-poder">⚡ 85</div>
-        </div>
-      </div>
-    </main>
+    <section id="listaProyectos" class="lista-proyectos">
+      <!-- Aquí se renderizarán los proyectos -->
+    </section>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-<script src="script.js"></script>
+  <script src="home.js"></script>
 </body>
 </html>

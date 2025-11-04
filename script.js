@@ -1,3 +1,10 @@
+// Cargar datos del proyecto activo (si existe)
+const proyectoActivo = JSON.parse(localStorage.getItem("proyectoActivo"));
+if (proyectoActivo) {
+  const tituloProyecto = document.getElementById("tituloProyecto");
+  if (tituloProyecto) tituloProyecto.textContent = `🎴 ${proyectoActivo.nombre}`;
+}
+
 const nombre = document.getElementById("nombre");
 const descripcion = document.getElementById("descripcion");
 const imagen = document.getElementById("imagen");
