@@ -19,7 +19,7 @@ function cargarProyectos() {
     `;
     card.addEventListener("click", () => {
       localStorage.setItem("proyectoActivo", JSON.stringify(proyecto));
-      window.location.href = "editor.html";
+ window.location.href = "project.html";
     });
     listaProyectos.appendChild(card);
   });
