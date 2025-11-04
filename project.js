@@ -267,7 +267,9 @@ renderTipos();
 
 
 //crear cartas
-// === CARTAS con Modal ===
+
+
+// === CARTAS con Modal y orientación ===
 if (!proyectoActivo.datos.cartas) proyectoActivo.datos.cartas = [];
 
 const cartaModal = document.getElementById("cartaModal");
@@ -281,11 +283,15 @@ const cartaAltoCm = document.getElementById("cartaAltoCm");
 const dimensionPx = document.getElementById("dimensionPx");
 const crearCartaBtn = document.getElementById("crearCartaBtn");
 const listaCartas = document.getElementById("listaCartas");
+const previewCarta = document.getElementById("previewCarta");
+const orientacionRadios = document.querySelectorAll("input[name='orientacion']");
 
 // Abrir modal
 openCartaModal.addEventListener("click", () => {
   cartaModal.style.display = "flex";
   cargarTiposEnSelect();
+  actualizarDimensionPx();
+  actualizarPreview();
 });
 
 // Cerrar modal
@@ -309,13 +315,22 @@ function cmToPx(cm) {
   const dpi = 300;
   return Math.round((cm / 2.54) * dpi);
 }
+
+// Actualizar dimensiones y preview
 function actualizarDimensionPx() {
   const w = parseFloat(cartaAnchoCm.value) || 0;
   const h = parseFloat(cartaAltoCm.value) || 0;
-  dimensionPx.textContent = `Dimensión: ${cmToPx(w)} × ${cmToPx(h)} px @300dpi`;
+  dimensionPx.textContent = `Dimensión en píxeles: ${cmToPx(w)} × ${cmToPx(h)} px @300dpi`;
 }
+
+function actualizarPreview() {
+  const orientacion = document.querySelector("input[name='orientacion']:checked").value;
+  previewCarta.className = orientacion === "vertical" ? "preview-vertical" : "preview-horizontal";
+}
+
 cartaAnchoCm.addEventListener("input", actualizarDimensionPx);
 cartaAltoCm.addEventListener("input", actualizarDimensionPx);
+orientacionRadios.forEach(radio => radio.addEventListener("change", actualizarPreview));
 
 // Crear carta
 crearCartaBtn.addEventListener("click", () => {
@@ -323,6 +338,8 @@ crearCartaBtn.addEventListener("click", () => {
   const tipo = cartaTipo.value;
   const ancho = parseFloat(cartaAnchoCm.value);
   const alto = parseFloat(cartaAltoCm.value);
+  const orientacion = document.querySelector("input[name='orientacion']:checked").value;
+
   if (!nombre || !tipo || !ancho || !alto) {
     alert("Completa todos los campos");
     return;
@@ -332,6 +349,7 @@ crearCartaBtn.addEventListener("click", () => {
     id: Date.now(),
     nombre,
     tipo,
+    orientacion,
     dimensiones: {
       cm: { ancho, alto },
       px: { ancho: cmToPx(ancho), alto: cmToPx(alto) },
@@ -344,9 +362,10 @@ crearCartaBtn.addEventListener("click", () => {
   renderCartas();
   cartaModal.style.display = "none";
   cartaNombre.value = "";
-  cartaAnchoCm.value = "";
-  cartaAltoCm.value = "";
-  dimensionPx.textContent = "Dimensión en píxeles: —";
+  cartaAnchoCm.value = "6.3";
+  cartaAltoCm.value = "8.8";
+  dimensionPx.textContent = "Dimensión en píxeles: 744 × 1043 px @300dpi";
+  previewCarta.className = "preview-vertical";
 });
 
 // Guardar y renderizar
@@ -373,13 +392,14 @@ function renderCartas() {
     div.innerHTML = `
       <h4>${carta.nombre}</h4>
       <small>Tipo: ${carta.tipo}</small>
-      <small>${carta.dimensiones.cm.ancho}×${carta.dimensiones.cm.alto} cm  
-      (${carta.dimensiones.px.ancho}×${carta.dimensiones.px.alto}px)</small>
+      <small>Orientación: ${carta.orientacion}</small>
+      <small>${carta.dimensiones.cm.ancho}×${carta.dimensiones.cm.alto} cm (${carta.dimensiones.px.ancho}×${carta.dimensiones.px.alto}px)</small>
     `;
     listaCartas.appendChild(div);
   });
 }
 renderCartas();
+
 
 
 //fin de crear cartas

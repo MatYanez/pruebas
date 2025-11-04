@@ -42,35 +42,51 @@
   <!-- Botón flotante para crear carta -->
   <button id="openCartaModal" class="fab-btn">＋</button>
 
-  <!-- Modal de creación -->
-  <div id="cartaModal" class="modal-overlay">
-    <div class="modal">
-      <h3>Crear Nueva Carta</h3>
-      <div class="modal-content">
-        <label>Nombre de la carta</label>
-        <input id="cartaNombre" type="text" placeholder="Ej. Dragón de Fuego" />
+<!-- Modal de creación -->
+<div id="cartaModal" class="modal-overlay">
+  <div class="modal">
+    <h3>Crear Nueva Carta</h3>
+    <div class="modal-content">
+      <label>Nombre de la carta</label>
+      <input id="cartaNombre" type="text" placeholder="Ej. Dragón de Fuego" />
 
-        <label>Tipo de carta</label>
-        <select id="cartaTipo"></select>
+      <label>Tipo de carta</label>
+      <select id="cartaTipo"></select>
 
-        <div class="dimension-inputs">
-          <div>
-            <label>Ancho (cm)</label>
-            <input id="cartaAnchoCm" type="number" step="0.1" min="0" />
-          </div>
-          <div>
-            <label>Alto (cm)</label>
-            <input id="cartaAltoCm" type="number" step="0.1" min="0" />
-          </div>
+      <div class="dimension-inputs">
+        <div>
+          <label>Ancho (cm)</label>
+          <input id="cartaAnchoCm" type="number" step="0.1" min="0" value="6.3" />
         </div>
-
-        <p id="dimensionPx" style="color:#555;">Dimensión en píxeles: —</p>
-
-        <button id="crearCartaBtn">💾 Crear carta</button>
-        <button id="cerrarModalBtn" class="cancel-btn">Cancelar</button>
+        <div>
+          <label>Alto (cm)</label>
+          <input id="cartaAltoCm" type="number" step="0.1" min="0" value="8.8" />
+        </div>
       </div>
+
+      <label>Orientación</label>
+      <div class="orientacion-options">
+        <label>
+          <input type="radio" name="orientacion" value="vertical" checked />
+          <span>⬆️ Vertical</span>
+        </label>
+        <label>
+          <input type="radio" name="orientacion" value="horizontal" />
+          <span>➡️ Horizontal</span>
+        </label>
+      </div>
+
+      <div class="preview-orientacion">
+        <div id="previewCarta" class="preview-vertical"></div>
+        <small id="dimensionPx">Dimensión en píxeles: 744 × 1043 px @300dpi</small>
+      </div>
+
+      <button id="crearCartaBtn">💾 Crear carta</button>
+      <button id="cerrarModalBtn" class="cancel-btn">Cancelar</button>
     </div>
   </div>
+</div>
+
 </section>
 
 

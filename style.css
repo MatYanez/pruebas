@@ -443,3 +443,59 @@ button.add-cat:hover, button#addTipoBtn:hover {
   gap: 12px;
   margin-top: 10px;
 }
+
+/* === ORIENTACIÓN Y PREVIEW === */
+.orientacion-options {
+  display: flex;
+  gap: 16px;
+  margin: 10px 0 20px 0;
+}
+
+.orientacion-options label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #f2f2f7;
+  padding: 8px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.orientacion-options input {
+  accent-color: #007aff;
+}
+
+.orientacion-options label:hover {
+  background: rgba(0,122,255,0.1);
+}
+
+.preview-orientacion {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px 0;
+}
+
+#previewCarta {
+  background: repeating-linear-gradient(
+    45deg,
+    #e5e5ea,
+    #e5e5ea 10px,
+    #f7f7fa 10px,
+    #f7f7fa 20px
+  );
+  border-radius: 10px;
+  border: 2px solid #ccc;
+  transition: all 0.3s ease;
+}
+
+.preview-vertical {
+  width: 100px;
+  height: 140px;
+}
+
+.preview-horizontal {
+  width: 140px;
+  height: 100px;
+}
