@@ -73,7 +73,6 @@ if (deleteBtn) {
 // === VARIABLES: Tipos de carta y categorías ===
 
 // Cargar datos del proyecto activo
-let proyectoActivo = JSON.parse(localStorage.getItem("proyectoActivo")) || {};
 if (!proyectoActivo.datos) proyectoActivo.datos = {};
 if (!proyectoActivo.datos.variables) proyectoActivo.datos.variables = [];
 
