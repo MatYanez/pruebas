@@ -47,7 +47,6 @@ header button {
   padding: 14px 22px;
   font-size: 17px;
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0, 122, 255, 0.3);
   transition: all 0.25s ease;
 }
 
@@ -159,7 +158,6 @@ header button:hover {
 }
 
 .tab-btn.active {
-  background-color: rgba(0, 122, 255, 0.15);
   color: #007aff;
   font-weight: 600;
 }
