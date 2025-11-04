@@ -260,3 +260,114 @@ renderTipos();
 
 
 //fin variable de cartas
+
+
+//crear cartas
+if (!proyectoActivo.datos.cartas) proyectoActivo.datos.cartas = [];
+
+const cartaNombre = document.getElementById("cartaNombre");
+const cartaTipo = document.getElementById("cartaTipo");
+const cartaAnchoCm = document.getElementById("cartaAnchoCm");
+const cartaAltoCm = document.getElementById("cartaAltoCm");
+const dimensionPx = document.getElementById("dimensionPx");
+const crearCartaBtn = document.getElementById("crearCartaBtn");
+const listaCartas = document.getElementById("listaCartas");
+
+// Cargar tipos desde Variables
+function cargarTiposEnSelect() {
+  cartaTipo.innerHTML = "<option value=''>-- Seleccionar tipo --</option>";
+  (proyectoActivo.datos.variables || []).forEach((tipo, index) => {
+    const option = document.createElement("option");
+    option.value = tipo.nombre;
+    option.textContent = tipo.nombre;
+    cartaTipo.appendChild(option);
+  });
+}
+cargarTiposEnSelect();
+
+// Conversión de cm a píxeles
+function cmToPx(cm) {
+  const dpi = 300;
+  const pulgadas = cm / 2.54;
+  return Math.round(pulgadas * dpi);
+}
+
+function actualizarDimensionPx() {
+  const wCm = parseFloat(cartaAnchoCm.value) || 0;
+  const hCm = parseFloat(cartaAltoCm.value) || 0;
+  const wPx = cmToPx(wCm);
+  const hPx = cmToPx(hCm);
+  dimensionPx.textContent = `Dimensión en píxeles: ${wPx} × ${hPx}px @300 dpi`;
+}
+cartaAnchoCm.addEventListener("input", actualizarDimensionPx);
+cartaAltoCm.addEventListener("input", actualizarDimensionPx);
+
+// Crear carta
+crearCartaBtn.addEventListener("click", () => {
+  const nombre = cartaNombre.value.trim();
+  const tipo = cartaTipo.value;
+  const anchoCm = parseFloat(cartaAnchoCm.value);
+  const altoCm = parseFloat(cartaAltoCm.value);
+
+  if (!nombre || !tipo || !anchoCm || !altoCm) {
+    alert("Por favor completa todos los campos.");
+    return;
+  }
+
+  const nuevaCarta = {
+    id: Date.now(),
+    nombre,
+    tipo,
+    dimensiones: {
+      cm: { ancho: anchoCm, alto: altoCm },
+      px: { ancho: cmToPx(anchoCm), alto: cmToPx(altoCm) },
+      dpi: 300
+    }
+  };
+
+  proyectoActivo.datos.cartas.push(nuevaCarta);
+  guardarCartas();
+  renderCartas();
+
+  cartaNombre.value = "";
+  cartaAnchoCm.value = "";
+  cartaAltoCm.value = "";
+  dimensionPx.textContent = "Dimensión en píxeles: —";
+});
+
+// Guardar cartas en localStorage
+function guardarCartas() {
+  const proyectos = JSON.parse(localStorage.getItem("proyectos")) || [];
+  const idx = proyectos.findIndex(p => p.id === proyectoActivo.id);
+  if (idx >= 0) {
+    proyectos[idx].datos.cartas = proyectoActivo.datos.cartas;
+    localStorage.setItem("proyectos", JSON.stringify(proyectos));
+    localStorage.setItem("proyectoActivo", JSON.stringify(proyectos[idx]));
+  }
+}
+
+// Renderizar lista de cartas
+function renderCartas() {
+  listaCartas.innerHTML = "";
+  if (proyectoActivo.datos.cartas.length === 0) {
+    listaCartas.innerHTML = "<p style='color:#8e8e93;'>No hay cartas creadas.</p>";
+    return;
+  }
+
+  proyectoActivo.datos.cartas.forEach((carta) => {
+    const card = document.createElement("div");
+    card.className = "proyecto-card";
+    card.innerHTML = `
+      <h4>${carta.nombre}</h4>
+      <small>Tipo: ${carta.tipo}</small><br>
+      <small>${carta.dimensiones.cm.ancho} × ${carta.dimensiones.cm.alto} cm  
+      → ${carta.dimensiones.px.ancho} × ${carta.dimensiones.px.alto}px</small>
+    `;
+    listaCartas.appendChild(card);
+  });
+}
+
+renderCartas();
+
+
+//fin de crear cartas

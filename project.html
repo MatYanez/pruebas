@@ -33,11 +33,38 @@
       <input type="color" value="#007aff">
     </section>
 
-    <section id="tab-cartas" class="tab-section">
-      <h2>🎴 Cartas</h2>
-      <p>Aquí puedes gestionar las cartas de tu juego.</p>
-      <button>+ Crear nueva carta</button>
-    </section>
+<section id="tab-cartas" class="tab-section">
+  <h2>🎴 Crear nueva carta</h2>
+
+  <div class="carta-form">
+    <label>Nombre de la carta</label>
+    <input id="cartaNombre" type="text" placeholder="Ej. Dragón de Fuego" />
+
+    <label>Tipo de carta</label>
+    <select id="cartaTipo"></select>
+
+    <div class="dimension-inputs">
+      <div>
+        <label>Ancho (cm)</label>
+        <input id="cartaAnchoCm" type="number" step="0.1" min="0" />
+      </div>
+      <div>
+        <label>Alto (cm)</label>
+        <input id="cartaAltoCm" type="number" step="0.1" min="0" />
+      </div>
+    </div>
+
+    <p id="dimensionPx" style="color:#555;">Dimensión en píxeles: —</p>
+
+    <button id="crearCartaBtn">💾 Crear carta</button>
+  </div>
+
+  <hr>
+
+  <h3>Cartas del proyecto</h3>
+  <div id="listaCartas"></div>
+</section>
+
 
 <section id="tab-variables" class="tab-section">
   <h2>🔢 Tipos de Carta</h2>
