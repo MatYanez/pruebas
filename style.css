@@ -553,3 +553,68 @@ button.add-cat:hover, button#addTipoBtn:hover {
   border-color: #007aff;
   color: #007aff;
 }
+
+/* === ACCIONES EN CARTAS === */
+.carta-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+}
+
+.delete-carta-btn {
+  background-color: #ff3b30;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.delete-carta-btn:hover {
+  background-color: #d63027;
+}
+
+/* === MINI CHIPS DE CATEGORÍAS === */
+.chips-preview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 6px;
+}
+
+.chip-mini {
+  background: #f2f2f7;
+  padding: 2px 6px;
+  border-radius: 8px;
+  font-size: 12px;
+  color: #555;
+}
+
+/* === MODAL DE CONFIRMACIÓN === */
+.modal-small {
+  width: 320px;
+}
+
+.confirm-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.danger-btn {
+  background-color: #ff3b30;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.danger-btn:hover {
+  background-color: #d62d23;
+}

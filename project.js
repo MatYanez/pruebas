@@ -492,6 +492,39 @@ guardarCategoriasBtn.addEventListener("click", () => {
   cartaEnEdicion = null;
 });
 
+// === CONFIRMAR ELIMINACIÓN DE CARTA ===
+const confirmModal = document.getElementById("confirmModal");
+const confirmText = document.getElementById("confirmText");
+const confirmDeleteBtn = document.getElementById("confirmDeleteBtn");
+const cancelDeleteBtn = document.getElementById("cancelDeleteBtn");
+
+let cartaAEliminar = null;
+
+function abrirConfirmarEliminacion(idCarta) {
+  cartaAEliminar = proyectoActivo.datos.cartas.find((c) => c.id === idCarta);
+  if (!cartaAEliminar) return;
+
+  confirmText.textContent = `¿Seguro que deseas eliminar la carta “${cartaAEliminar.nombre}”?`;
+  confirmModal.style.display = "flex";
+}
+
+confirmDeleteBtn.addEventListener("click", () => {
+  if (!cartaAEliminar) return;
+  proyectoActivo.datos.cartas = proyectoActivo.datos.cartas.filter(
+    (c) => c.id !== cartaAEliminar.id
+  );
+  guardarCartas();
+  renderCartas();
+  confirmModal.style.display = "none";
+  cartaAEliminar = null;
+});
+
+cancelDeleteBtn.addEventListener("click", () => {
+  confirmModal.style.display = "none";
+  cartaAEliminar = null;
+});
+
+
 // Cerrar modal
 cerrarEditarModalBtn.addEventListener("click", () => {
   editarCartaModal.style.display = "none";
