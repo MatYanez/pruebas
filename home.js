@@ -1,8 +1,7 @@
-// === Referencias al DOM ===
 const nuevoProyectoBtn = document.getElementById("nuevoProyectoBtn");
 const listaProyectos = document.getElementById("listaProyectos");
 
-// === Cargar proyectos al iniciar ===
+// Cargar proyectos al iniciar
 window.addEventListener("DOMContentLoaded", cargarProyectos);
 
 function cargarProyectos() {
@@ -13,8 +12,7 @@ function cargarProyectos() {
     listaProyectos.innerHTML = `
       <p style="text-align:center;color:#888;margin-top:40px;">
         Aún no tienes proyectos. Crea uno nuevo para empezar.
-      </p>
-    `;
+      </p>`;
     return;
   }
 
@@ -26,9 +24,10 @@ function cargarProyectos() {
       <small>Creado el ${new Date(proyecto.fecha).toLocaleDateString()}</small>
     `;
 
-    // 🔹 Al hacer clic en un proyecto, guardarlo como activo y abrirlo
+    // 🔹 Al hacer clic: guardar y abrir
     card.addEventListener("click", () => {
       localStorage.setItem("proyectoActivo", JSON.stringify(proyecto));
+      console.log("Abriendo proyecto:", proyecto.nombre); // debug
       window.location.href = "project.html";
     });
 
@@ -36,7 +35,7 @@ function cargarProyectos() {
   });
 }
 
-// === Crear un nuevo proyecto ===
+// Crear nuevo proyecto
 nuevoProyectoBtn.addEventListener("click", () => {
   const nombre = prompt("Nombre del nuevo proyecto:");
   if (!nombre) return;
@@ -45,23 +44,17 @@ nuevoProyectoBtn.addEventListener("click", () => {
     id: Date.now(),
     nombre,
     fecha: new Date().toISOString(),
-    datos: {
-      maqueta: {},
-      cartas: [],
-      variables: [],
-      contenido: "",
-      config: {},
-    },
+    datos: { maqueta: {}, cartas: [], variables: [], contenido: "", config: {} },
   };
 
-  // Guardar el proyecto en localStorage
   const proyectos = JSON.parse(localStorage.getItem("proyectos")) || [];
   proyectos.push(nuevoProyecto);
   localStorage.setItem("proyectos", JSON.stringify(proyectos));
 
-  // Guardar el proyecto activo
+  // 🔹 Guardar proyecto activo ANTES de redirigir
   localStorage.setItem("proyectoActivo", JSON.stringify(nuevoProyecto));
+  console.log("Nuevo proyecto creado:", nuevoProyecto.nombre); // debug
 
-  // Redirigir a la página del proyecto
+  // Redirigir
   window.location.href = "project.html";
 });
