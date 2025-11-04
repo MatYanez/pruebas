@@ -34,36 +34,45 @@
     </section>
 
 <section id="tab-cartas" class="tab-section">
-  <h2>🎴 Crear nueva carta</h2>
+  <h2>🎴 Cartas del Proyecto</h2>
 
-  <div class="carta-form">
-    <label>Nombre de la carta</label>
-    <input id="cartaNombre" type="text" placeholder="Ej. Dragón de Fuego" />
+  <!-- Grid de cartas -->
+  <div id="listaCartas" class="cartas-grid"></div>
 
-    <label>Tipo de carta</label>
-    <select id="cartaTipo"></select>
+  <!-- Botón flotante para crear carta -->
+  <button id="openCartaModal" class="fab-btn">＋</button>
 
-    <div class="dimension-inputs">
-      <div>
-        <label>Ancho (cm)</label>
-        <input id="cartaAnchoCm" type="number" step="0.1" min="0" />
-      </div>
-      <div>
-        <label>Alto (cm)</label>
-        <input id="cartaAltoCm" type="number" step="0.1" min="0" />
+  <!-- Modal de creación -->
+  <div id="cartaModal" class="modal-overlay">
+    <div class="modal">
+      <h3>Crear Nueva Carta</h3>
+      <div class="modal-content">
+        <label>Nombre de la carta</label>
+        <input id="cartaNombre" type="text" placeholder="Ej. Dragón de Fuego" />
+
+        <label>Tipo de carta</label>
+        <select id="cartaTipo"></select>
+
+        <div class="dimension-inputs">
+          <div>
+            <label>Ancho (cm)</label>
+            <input id="cartaAnchoCm" type="number" step="0.1" min="0" />
+          </div>
+          <div>
+            <label>Alto (cm)</label>
+            <input id="cartaAltoCm" type="number" step="0.1" min="0" />
+          </div>
+        </div>
+
+        <p id="dimensionPx" style="color:#555;">Dimensión en píxeles: —</p>
+
+        <button id="crearCartaBtn">💾 Crear carta</button>
+        <button id="cerrarModalBtn" class="cancel-btn">Cancelar</button>
       </div>
     </div>
-
-    <p id="dimensionPx" style="color:#555;">Dimensión en píxeles: —</p>
-
-    <button id="crearCartaBtn">💾 Crear carta</button>
   </div>
-
-  <hr>
-
-  <h3>Cartas del proyecto</h3>
-  <div id="listaCartas"></div>
 </section>
+
 
 
 <section id="tab-variables" class="tab-section">

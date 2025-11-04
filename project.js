@@ -234,6 +234,8 @@ function attachTipoEvents() {
 }
 
 
+
+
 // Guardar variables en localStorage
 function guardarVariables(showAlert = true) {
   const proyectos = JSON.parse(localStorage.getItem("proyectos")) || [];
@@ -246,6 +248,8 @@ function guardarVariables(showAlert = true) {
     if (showAlert) console.log("✅ Variables guardadas.");
   }
 }
+
+
 
 // Botón para agregar nuevo tipo
 addTipoBtn.addEventListener("click", () => {
@@ -263,7 +267,12 @@ renderTipos();
 
 
 //crear cartas
+// === CARTAS con Modal ===
 if (!proyectoActivo.datos.cartas) proyectoActivo.datos.cartas = [];
+
+const cartaModal = document.getElementById("cartaModal");
+const openCartaModal = document.getElementById("openCartaModal");
+const cerrarModalBtn = document.getElementById("cerrarModalBtn");
 
 const cartaNombre = document.getElementById("cartaNombre");
 const cartaTipo = document.getElementById("cartaTipo");
@@ -273,31 +282,37 @@ const dimensionPx = document.getElementById("dimensionPx");
 const crearCartaBtn = document.getElementById("crearCartaBtn");
 const listaCartas = document.getElementById("listaCartas");
 
+// Abrir modal
+openCartaModal.addEventListener("click", () => {
+  cartaModal.style.display = "flex";
+  cargarTiposEnSelect();
+});
+
+// Cerrar modal
+cerrarModalBtn.addEventListener("click", () => {
+  cartaModal.style.display = "none";
+});
+
 // Cargar tipos desde Variables
 function cargarTiposEnSelect() {
   cartaTipo.innerHTML = "<option value=''>-- Seleccionar tipo --</option>";
-  (proyectoActivo.datos.variables || []).forEach((tipo, index) => {
-    const option = document.createElement("option");
-    option.value = tipo.nombre;
-    option.textContent = tipo.nombre;
-    cartaTipo.appendChild(option);
+  (proyectoActivo.datos.variables || []).forEach((tipo) => {
+    const opt = document.createElement("option");
+    opt.value = tipo.nombre;
+    opt.textContent = tipo.nombre;
+    cartaTipo.appendChild(opt);
   });
 }
-cargarTiposEnSelect();
 
-// Conversión de cm a píxeles
+// Conversión cm → px
 function cmToPx(cm) {
   const dpi = 300;
-  const pulgadas = cm / 2.54;
-  return Math.round(pulgadas * dpi);
+  return Math.round((cm / 2.54) * dpi);
 }
-
 function actualizarDimensionPx() {
-  const wCm = parseFloat(cartaAnchoCm.value) || 0;
-  const hCm = parseFloat(cartaAltoCm.value) || 0;
-  const wPx = cmToPx(wCm);
-  const hPx = cmToPx(hCm);
-  dimensionPx.textContent = `Dimensión en píxeles: ${wPx} × ${hPx}px @300 dpi`;
+  const w = parseFloat(cartaAnchoCm.value) || 0;
+  const h = parseFloat(cartaAltoCm.value) || 0;
+  dimensionPx.textContent = `Dimensión: ${cmToPx(w)} × ${cmToPx(h)} px @300dpi`;
 }
 cartaAnchoCm.addEventListener("input", actualizarDimensionPx);
 cartaAltoCm.addEventListener("input", actualizarDimensionPx);
@@ -306,11 +321,10 @@ cartaAltoCm.addEventListener("input", actualizarDimensionPx);
 crearCartaBtn.addEventListener("click", () => {
   const nombre = cartaNombre.value.trim();
   const tipo = cartaTipo.value;
-  const anchoCm = parseFloat(cartaAnchoCm.value);
-  const altoCm = parseFloat(cartaAltoCm.value);
-
-  if (!nombre || !tipo || !anchoCm || !altoCm) {
-    alert("Por favor completa todos los campos.");
+  const ancho = parseFloat(cartaAnchoCm.value);
+  const alto = parseFloat(cartaAltoCm.value);
+  if (!nombre || !tipo || !ancho || !alto) {
+    alert("Completa todos los campos");
     return;
   }
 
@@ -319,26 +333,26 @@ crearCartaBtn.addEventListener("click", () => {
     nombre,
     tipo,
     dimensiones: {
-      cm: { ancho: anchoCm, alto: altoCm },
-      px: { ancho: cmToPx(anchoCm), alto: cmToPx(altoCm) },
-      dpi: 300
-    }
+      cm: { ancho, alto },
+      px: { ancho: cmToPx(ancho), alto: cmToPx(alto) },
+      dpi: 300,
+    },
   };
 
   proyectoActivo.datos.cartas.push(nuevaCarta);
   guardarCartas();
   renderCartas();
-
+  cartaModal.style.display = "none";
   cartaNombre.value = "";
   cartaAnchoCm.value = "";
   cartaAltoCm.value = "";
   dimensionPx.textContent = "Dimensión en píxeles: —";
 });
 
-// Guardar cartas en localStorage
+// Guardar y renderizar
 function guardarCartas() {
   const proyectos = JSON.parse(localStorage.getItem("proyectos")) || [];
-  const idx = proyectos.findIndex(p => p.id === proyectoActivo.id);
+  const idx = proyectos.findIndex((p) => p.id === proyectoActivo.id);
   if (idx >= 0) {
     proyectos[idx].datos.cartas = proyectoActivo.datos.cartas;
     localStorage.setItem("proyectos", JSON.stringify(proyectos));
@@ -346,27 +360,25 @@ function guardarCartas() {
   }
 }
 
-// Renderizar lista de cartas
 function renderCartas() {
   listaCartas.innerHTML = "";
   if (proyectoActivo.datos.cartas.length === 0) {
-    listaCartas.innerHTML = "<p style='color:#8e8e93;'>No hay cartas creadas.</p>";
+    listaCartas.innerHTML = `<p style="color:#8e8e93;">No hay cartas creadas.</p>`;
     return;
   }
 
   proyectoActivo.datos.cartas.forEach((carta) => {
-    const card = document.createElement("div");
-    card.className = "proyecto-card";
-    card.innerHTML = `
+    const div = document.createElement("div");
+    div.className = "carta-card";
+    div.innerHTML = `
       <h4>${carta.nombre}</h4>
-      <small>Tipo: ${carta.tipo}</small><br>
-      <small>${carta.dimensiones.cm.ancho} × ${carta.dimensiones.cm.alto} cm  
-      → ${carta.dimensiones.px.ancho} × ${carta.dimensiones.px.alto}px</small>
+      <small>Tipo: ${carta.tipo}</small>
+      <small>${carta.dimensiones.cm.ancho}×${carta.dimensiones.cm.alto} cm  
+      (${carta.dimensiones.px.ancho}×${carta.dimensiones.px.alto}px)</small>
     `;
-    listaCartas.appendChild(card);
+    listaCartas.appendChild(div);
   });
 }
-
 renderCartas();
 
 
