@@ -389,16 +389,96 @@ function renderCartas() {
   proyectoActivo.datos.cartas.forEach((carta) => {
     const div = document.createElement("div");
     div.className = "carta-card";
+
+    // Determinar orientación
+    const orientacionClass = carta.orientacion === "horizontal" ? "horizontal" : "";
+
     div.innerHTML = `
+      <div class="carta-thumb ${orientacionClass}">
+        ${carta.orientacion === "horizontal" ? "➡️" : "⬆️"}
+      </div>
       <h4>${carta.nombre}</h4>
       <small>Tipo: ${carta.tipo}</small>
-      <small>Orientación: ${carta.orientacion}</small>
-      <small>${carta.dimensiones.cm.ancho}×${carta.dimensiones.cm.alto} cm (${carta.dimensiones.px.ancho}×${carta.dimensiones.px.alto}px)</small>
+      <button class="edit-carta-btn" data-id="${carta.id}">⚙️ Editar</button>
     `;
+
     listaCartas.appendChild(div);
   });
+
+  // Asignar eventos a los botones de editar
+  document.querySelectorAll(".edit-carta-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const cartaId = parseInt(btn.dataset.id);
+      abrirEditarCartaModal(cartaId);
+    });
+  });
 }
-renderCartas();
+
+// === EDITAR CARTA / CATEGORÍAS ===
+const editarCartaModal = document.getElementById("editarCartaModal");
+const editarCartaNombre = document.getElementById("editarCartaNombre");
+const editarCartaTipo = document.getElementById("editarCartaTipo");
+const categoriasCartaContainer = document.getElementById("categoriasCartaContainer");
+const guardarCategoriasBtn = document.getElementById("guardarCategoriasBtn");
+const cerrarEditarModalBtn = document.getElementById("cerrarEditarModalBtn");
+
+let cartaEnEdicion = null;
+
+// Abrir modal de edición
+function abrirEditarCartaModal(idCarta) {
+  const carta = proyectoActivo.datos.cartas.find((c) => c.id === idCarta);
+  if (!carta) return;
+
+  cartaEnEdicion = carta;
+
+  editarCartaNombre.textContent = carta.nombre;
+  editarCartaTipo.textContent = `Tipo: ${carta.tipo}`;
+
+  // Buscar las categorías asociadas al tipo
+  const tipoObj = (proyectoActivo.datos.variables || []).find((t) => t.nombre === carta.tipo);
+  const categorias = tipoObj ? tipoObj.categorias : [];
+
+  categoriasCartaContainer.innerHTML = "";
+  categorias.forEach((cat) => {
+    const chip = document.createElement("div");
+    chip.className = "categoria-chip";
+    chip.innerHTML = `${cat.icono ? `<img src="${cat.icono}" width="16" height="16" style="border-radius:3px;">` : ""} ${cat.nombre}`;
+
+    // Verificar si la carta ya tiene esta categoría
+    if (carta.categorias && carta.categorias.includes(cat.nombre)) {
+      chip.classList.add("active");
+    }
+
+    chip.addEventListener("click", () => {
+      chip.classList.toggle("active");
+    });
+
+    categoriasCartaContainer.appendChild(chip);
+  });
+
+  editarCartaModal.style.display = "flex";
+}
+
+// Guardar cambios
+guardarCategoriasBtn.addEventListener("click", () => {
+  if (!cartaEnEdicion) return;
+
+  const seleccionadas = Array.from(document.querySelectorAll(".categoria-chip.active"))
+    .map((chip) => chip.textContent.trim());
+
+  cartaEnEdicion.categorias = seleccionadas;
+
+  guardarCartas();
+  renderCartas();
+  editarCartaModal.style.display = "none";
+  cartaEnEdicion = null;
+});
+
+// Cerrar modal
+cerrarEditarModalBtn.addEventListener("click", () => {
+  editarCartaModal.style.display = "none";
+  cartaEnEdicion = null;
+});
 
 
 

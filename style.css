@@ -499,3 +499,57 @@ button.add-cat:hover, button#addTipoBtn:hover {
   width: 140px;
   height: 100px;
 }
+
+/* === CARTAS EN GRID === */
+.carta-thumb {
+  width: 100%;
+  height: 140px;
+  border-radius: 12px;
+  background: repeating-linear-gradient(45deg, #e5e5ea, #e5e5ea 10px, #f7f7fa 10px, #f7f7fa 20px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #8e8e93;
+  font-size: 24px;
+  margin-bottom: 10px;
+  border: 2px solid #d1d1d6;
+  overflow: hidden;
+}
+
+.carta-thumb.horizontal {
+  height: 100px;
+  width: 100%;
+}
+
+.carta-card button {
+  margin-top: 8px;
+  padding: 8px 12px;
+  font-size: 14px;
+  border-radius: 8px;
+}
+
+/* === MODAL DE CATEGORÍAS === */
+#categoriasCartaContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 10px 0 20px;
+}
+
+.categoria-chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #f2f2f7;
+  border-radius: 10px;
+  padding: 6px 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+
+.categoria-chip.active {
+  background: rgba(0,122,255,0.15);
+  border-color: #007aff;
+  color: #007aff;
+}
