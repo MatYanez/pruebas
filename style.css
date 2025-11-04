@@ -214,3 +214,76 @@ button:hover {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+
+/* === VARIABLES (Tipos y categorías) === */
+.tipo-card {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(15px);
+  border-radius: 20px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.tipo-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.tipo-header input {
+  flex: 1;
+  font-size: 18px;
+  font-weight: 600;
+  border: none;
+  background: transparent;
+  padding: 8px;
+  border-radius: 8px;
+}
+
+.categorias {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.categoria-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.categoria-item input {
+  flex: 1;
+  border: none;
+  background: #f2f2f7;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 15px;
+}
+
+button.add-cat, button#addTipoBtn {
+  background-color: #007aff;
+  color: white;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+button.add-cat:hover, button#addTipoBtn:hover {
+  background-color: #005fc3;
+}
+
+.delete-tipo, .delete-cat {
+  border: none;
+  background: none;
+  font-size: 18px;
+  cursor: pointer;
+  color: #ff3b30;
+}
