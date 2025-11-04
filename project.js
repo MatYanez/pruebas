@@ -58,3 +58,20 @@ nuevoProyectoBtn.addEventListener("click", () => {
   localStorage.setItem("proyectoActivo", JSON.stringify(nuevo));
   window.location.href = "project.html";
 });
+
+// === Cambiar entre tabs ===
+const tabButtons = document.querySelectorAll(".tab-btn");
+const tabSections = document.querySelectorAll(".tab-section");
+
+tabButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    // Quitar estado activo de todos
+    tabButtons.forEach((btn) => btn.classList.remove("active"));
+    tabSections.forEach((section) => section.classList.remove("active"));
+
+    // Activar el tab clicado
+    button.classList.add("active");
+    const target = button.getAttribute("data-tab");
+    document.getElementById(`tab-${target}`).classList.add("active");
+  });
+});
