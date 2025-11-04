@@ -96,17 +96,35 @@ function renderTipos() {
     tipoDiv.className = "tipo-card";
     tipoDiv.innerHTML = `
       <div class="tipo-header">
-        <input class="tipo-nombre" value="${tipo.nombre}" placeholder="Nombre del tipo">
-        <button class="delete-tipo">🗑</button>
+        <div class="tipo-info">
+          <input class="tipo-nombre" value="${tipo.nombre}" placeholder="Nombre del tipo">
+        </div>
+        <div class="tipo-actions">
+          <label class="icono-label" title="Seleccionar ícono">
+            <input type="file" accept="image/*" class="icono-input" data-index="${tipoIndex}" hidden>
+            ${
+              tipo.icono
+                ? `<img src="${tipo.icono}" class="icono-preview" alt="icono">`
+                : `<div class="icono-placeholder">📷</div>`
+            }
+          </label>
+          <button class="delete-tipo">🗑</button>
+        </div>
       </div>
+
       <div class="categorias">
-        ${tipo.categorias.map((cat, catIndex) => `
+        ${tipo.categorias
+          .map(
+            (cat, catIndex) => `
           <div class="categoria-item">
             <input class="categoria-nombre" value="${cat}" placeholder="Categoría">
             <button class="delete-cat" data-tipo="${tipoIndex}" data-cat="${catIndex}">✖</button>
           </div>
-        `).join("")}
+        `
+          )
+          .join("")}
       </div>
+
       <button class="add-cat" data-index="${tipoIndex}">+ Agregar categoría</button>
     `;
 
@@ -115,6 +133,7 @@ function renderTipos() {
 
   attachTipoEvents();
 }
+
 
 // Eventos de los botones dentro de los tipos
 function attachTipoEvents() {
@@ -164,6 +183,24 @@ function attachTipoEvents() {
       guardarVariables(false);
     });
   });
+
+    // Subir ícono
+  document.querySelectorAll(".icono-input").forEach((input) => {
+    input.addEventListener("change", (e) => {
+      const tipoIndex = parseInt(input.dataset.index);
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        proyectoActivo.datos.variables[tipoIndex].icono = ev.target.result; // Guardamos base64
+        guardarVariables(false);
+        renderTipos();
+      };
+      reader.readAsDataURL(file);
+    });
+  });
+
 }
 
 // Guardar variables en localStorage
