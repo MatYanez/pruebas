@@ -390,7 +390,6 @@ function renderCartas() {
     const div = document.createElement("div");
     div.className = "carta-card";
 
-    // Determinar orientación
     const orientacionClass = carta.orientacion === "horizontal" ? "horizontal" : "";
 
     div.innerHTML = `
@@ -399,20 +398,39 @@ function renderCartas() {
       </div>
       <h4>${carta.nombre}</h4>
       <small>Tipo: ${carta.tipo}</small>
-      <button class="edit-carta-btn" data-id="${carta.id}">⚙️ Editar</button>
+      ${
+        carta.categorias && carta.categorias.length
+          ? `<div class="chips-preview">${carta.categorias
+              .map((cat) => `<span class="chip-mini">${cat}</span>`)
+              .join("")}</div>`
+          : ""
+      }
+      <div class="carta-actions">
+        <button class="edit-carta-btn" data-id="${carta.id}">⚙️ Editar</button>
+        <button class="delete-carta-btn" data-id="${carta.id}">🗑️</button>
+      </div>
     `;
 
     listaCartas.appendChild(div);
   });
 
-  // Asignar eventos a los botones de editar
+  // Botones de edición
   document.querySelectorAll(".edit-carta-btn").forEach((btn) => {
     btn.addEventListener("click", () => {
       const cartaId = parseInt(btn.dataset.id);
       abrirEditarCartaModal(cartaId);
     });
   });
+
+  // Botones de eliminación
+  document.querySelectorAll(".delete-carta-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const cartaId = parseInt(btn.dataset.id);
+      abrirConfirmarEliminacion(cartaId);
+    });
+  });
 }
+
 
 // === EDITAR CARTA / CATEGORÍAS ===
 const editarCartaModal = document.getElementById("editarCartaModal");
