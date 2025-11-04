@@ -1,59 +1,55 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Proyecto | ProyCards</title>
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
-  <div class="project-container">
-    <!-- SIDEBAR -->
-    <aside class="sidebar">
-      <div class="sidebar-header">
-        <h2 id="projectName">Proyecto</h2>
-        <button class="home-btn" onclick="window.location.href='index.html'">🏠</button>
-      </div>
+<div class="project-container">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <h2 id="projectName">Proyecto</h2>
+      <button class="home-btn" onclick="window.location.href='index.html'">🏠</button>
+    </div>
 
-      <nav class="sidebar-menu">
-        <button class="tab-btn active" data-tab="maqueta">🧩 Maqueta</button>
-        <button class="tab-btn" data-tab="cartas">🎴 Cartas</button>
-        <button class="tab-btn" data-tab="variables">🔢 Variables</button>
-        <button class="tab-btn" data-tab="contenido">📝 Contenido</button>
-        <button class="tab-btn" data-tab="config">⚙️ Configuración</button>
-      </nav>
-    </aside>
+    <nav class="sidebar-menu">
+      <button class="tab-btn active" data-tab="maqueta">🧩 Maqueta</button>
+      <button class="tab-btn" data-tab="cartas">🎴 Cartas</button>
+      <button class="tab-btn" data-tab="variables">🔢 Variables</button>
+      <button class="tab-btn" data-tab="contenido">📝 Contenido</button>
+      <button class="tab-btn" data-tab="config">⚙️ Configuración</button>
+    </nav>
+  </aside>
 
-    <!-- MAIN CONTENT -->
-    <main class="tab-content">
-      <section id="tab-maqueta" class="tab-section active">
-        <h2>🧩 Maqueta</h2>
-        <p>Configura el diseño base de este proyecto.</p>
-      </section>
+  <!-- MAIN CONTENT -->
+  <main class="tab-content">
+    <section id="tab-maqueta" class="tab-section active">
+      <h2>🧩 Maqueta</h2>
+      <p>Aquí puedes configurar el diseño base de tu carta.</p>
+      <label>Color principal:</label>
+      <input type="color" value="#007aff">
+    </section>
 
-      <section id="tab-cartas" class="tab-section">
-        <h2>🎴 Cartas</h2>
-        <p>Aquí se mostrarán las cartas del proyecto.</p>
-      </section>
+    <section id="tab-cartas" class="tab-section">
+      <h2>🎴 Cartas</h2>
+      <p>Aquí puedes gestionar las cartas de tu juego.</p>
+      <button>+ Crear nueva carta</button>
+    </section>
 
-      <section id="tab-variables" class="tab-section">
-        <h2>🔢 Variables</h2>
-        <p>Aquí podrás definir variables globales para tu proyecto.</p>
-      </section>
+    <section id="tab-variables" class="tab-section">
+      <h2>🔢 Variables</h2>
+      <p>Define variables globales (como ataque, defensa, rareza).</p>
+      <input placeholder="Nombre de variable">
+      <button>Agregar</button>
+    </section>
 
-      <section id="tab-contenido" class="tab-section">
-        <h2>📝 Contenido</h2>
-        <p>Aquí podrás escribir la narrativa o historia del proyecto.</p>
-      </section>
+    <section id="tab-contenido" class="tab-section">
+      <h2>📝 Contenido</h2>
+      <p>Escribe la historia o lore del proyecto aquí.</p>
+      <textarea rows="6" placeholder="Historia del juego..."></textarea>
+    </section>
 
-      <section id="tab-config" class="tab-section">
-        <h2>⚙️ Configuración</h2>
-        <button id="saveProjectBtn">💾 Guardar Proyecto</button>
-        <button id="deleteProjectBtn">🗑 Eliminar Proyecto</button>
-      </section>
-    </main>
-  </div>
+    <section id="tab-config" class="tab-section">
+      <h2>⚙️ Configuración</h2>
+      <p>Opciones generales del proyecto.</p>
+      <button id="saveProjectBtn">💾 Guardar</button>
+      <button id="deleteProjectBtn">🗑 Eliminar</button>
+    </section>
+  </main>
+</div>
 
-  <script src="project.js"></script>
-</body>
-</html>
+<script src="project.js"></script>
