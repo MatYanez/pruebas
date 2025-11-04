@@ -8,31 +8,72 @@
 </head>
 <body>
   <div class="app-container">
-    <aside class="control-panel">
-      <button onclick="window.location.href='index.html'" style="margin-bottom:10px;">⬅ Volver al Home</button>
-      <h2 id="tituloProyecto">🎴 Proyecto</h2>
-      <label>
-        Nombre:
-        <input type="text" id="nombre" placeholder="Ej: Dragón Azul" />
-      </label>
-      <label>
-        Descripción:
-        <textarea id="descripcion" placeholder="Describe la carta..."></textarea>
-      </label>
-      <label>
-        Imagen (URL):
-        <input type="text" id="imagen" placeholder="https://..." />
-      </label>
-      <label>
-        Poder:
-        <input type="number" id="poder" min="0" max="999" placeholder="Ej: 85" />
-      </label>
-      <label>
-        Color de fondo:
-        <input type="color" id="colorFondo" value="#f1f2f6" />
-      </label>
-      <button id="resetBtn">Reiniciar</button>
-      <button id="exportBtn">Exportar como imagen</button>
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <button onclick="window.location.href='index.html'" class="back-btn">⬅</button>
+        <h2 id="tituloProyecto">Proyecto</h2>
+      </div>
+
+      <nav class="sidebar-tabs">
+        <button class="tab-btn active" data-tab="maqueta">🧩 Maqueta</button>
+        <button class="tab-btn" data-tab="cartas">🎴 Cartas</button>
+        <button class="tab-btn" data-tab="variables">🔢 Variables</button>
+        <button class="tab-btn" data-tab="contenido">📝 Contenido</button>
+        <button class="tab-btn" data-tab="config">⚙️ Config</button>
+      </nav>
+
+      <div class="tab-content">
+        <!-- Maqueta -->
+        <div class="tab-panel active" id="tab-maqueta">
+          <h3>Diseño de Carta</h3>
+          <label>
+            Nombre:
+            <input type="text" id="nombre" placeholder="Ej: Dragón Azul" />
+          </label>
+          <label>
+            Descripción:
+            <textarea id="descripcion" placeholder="Describe la carta..."></textarea>
+          </label>
+          <label>
+            Imagen (URL):
+            <input type="text" id="imagen" placeholder="https://..." />
+          </label>
+          <label>
+            Poder:
+            <input type="number" id="poder" min="0" max="999" placeholder="Ej: 85" />
+          </label>
+          <label>
+            Color de fondo:
+            <input type="color" id="colorFondo" value="#f1f2f6" />
+          </label>
+          <button id="resetBtn">Reiniciar</button>
+          <button id="exportBtn">Exportar</button>
+        </div>
+
+        <!-- Cartas -->
+        <div class="tab-panel" id="tab-cartas">
+          <h3>Gestión de Cartas</h3>
+          <p>Aquí podrás crear, duplicar o eliminar cartas del proyecto.</p>
+        </div>
+
+        <!-- Variables -->
+        <div class="tab-panel" id="tab-variables">
+          <h3>Variables Globales</h3>
+          <p>Aquí definirás variables personalizadas para todas las cartas.</p>
+        </div>
+
+        <!-- Contenido -->
+        <div class="tab-panel" id="tab-contenido">
+          <h3>Contenido y Narrativa</h3>
+          <p>Usa esta sección para el lore o historia del juego.</p>
+        </div>
+
+        <!-- Config -->
+        <div class="tab-panel" id="tab-config">
+          <h3>Configuración</h3>
+          <p>Opciones generales del proyecto.</p>
+        </div>
+      </div>
     </aside>
 
     <main class="preview">

@@ -51,3 +51,20 @@ exportBtn.addEventListener("click", () => {
     link.click();
   });
 });
+
+// --- Lógica de tabs ---
+const tabs = document.querySelectorAll(".tab-btn");
+const panels = document.querySelectorAll(".tab-panel");
+
+tabs.forEach((tab) => {
+  tab.addEventListener("click", () => {
+    // Quitar estado activo actual
+    tabs.forEach((t) => t.classList.remove("active"));
+    panels.forEach((p) => p.classList.remove("active"));
+
+    // Activar el seleccionado
+    tab.classList.add("active");
+    const target = tab.dataset.tab;
+    document.getElementById(`tab-${target}`).classList.add("active");
+  });
+});
