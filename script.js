@@ -33,3 +33,14 @@ resetBtn.addEventListener("click", () => {
   cartaPoder.textContent = "⚡ 85";
   carta.style.backgroundColor = "#f1f2f6";
 });
+
+const exportBtn = document.getElementById("exportBtn");
+
+exportBtn.addEventListener("click", () => {
+  html2canvas(carta, { backgroundColor: null }).then((canvas) => {
+    const link = document.createElement("a");
+    link.download = `${cartaNombre.textContent.replace(/\s+/g, "_")}.png`;
+    link.href = canvas.toDataURL("image/png");
+    link.click();
+  });
+});
