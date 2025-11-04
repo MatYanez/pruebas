@@ -52,19 +52,95 @@ exportBtn.addEventListener("click", () => {
   });
 });
 
-// --- Lógica de tabs ---
-const tabs = document.querySelectorAll(".tab-btn");
-const panels = document.querySelectorAll(".tab-panel");
+// --- Tabs verticales ---
+const vTabs = document.querySelectorAll(".tab-btn-vertical");
+const vPanels = document.querySelectorAll(".tab-panel-vertical");
 
-tabs.forEach((tab) => {
+vTabs.forEach((tab) => {
   tab.addEventListener("click", () => {
-    // Quitar estado activo actual
-    tabs.forEach((t) => t.classList.remove("active"));
-    panels.forEach((p) => p.classList.remove("active"));
-
-    // Activar el seleccionado
+    vTabs.forEach((t) => t.classList.remove("active"));
+    vPanels.forEach((p) => p.classList.remove("active"));
     tab.classList.add("active");
     const target = tab.dataset.tab;
     document.getElementById(`tab-${target}`).classList.add("active");
   });
 });
+
+// --- Tab: Cartas ---
+const nuevaCartaBtn = document.getElementById("nuevaCartaBtn");
+const listaCartas = document.getElementById("listaCartas");
+let cartas = [];
+
+if (nuevaCartaBtn) {
+  nuevaCartaBtn.addEventListener("click", () => {
+    const nombre = prompt("Nombre de la nueva carta:");
+    if (!nombre) return;
+    const nueva = { id: Date.now(), nombre };
+    cartas.push(nueva);
+    renderCartas();
+  });
+}
+
+function renderCartas() {
+  listaCartas.innerHTML = "";
+  cartas.forEach((c) => {
+    const div = document.createElement("div");
+    div.textContent = c.nombre;
+    listaCartas.appendChild(div);
+  });
+}
+
+// --- Tab: Variables ---
+const nuevaVariableBtn = document.getElementById("nuevaVariableBtn");
+const variablesContainer = document.getElementById("variablesContainer");
+let variables = [];
+
+if (nuevaVariableBtn) {
+  nuevaVariableBtn.addEventListener("click", () => {
+    const nombre = prompt("Nombre de la variable:");
+    if (!nombre) return;
+    const valor = prompt("Valor inicial:");
+    variables.push({ nombre, valor });
+    renderVariables();
+  });
+}
+
+function renderVariables() {
+  variablesContainer.innerHTML = "";
+  variables.forEach((v) => {
+    const div = document.createElement("div");
+    div.textContent = `${v.nombre}: ${v.valor}`;
+    variablesContainer.appendChild(div);
+  });
+}
+
+// --- Tab: Contenido ---
+const contenidoTexto = document.getElementById("contenidoTexto");
+if (contenidoTexto) {
+  contenidoTexto.addEventListener("input", () => {
+    console.log("Contenido actualizado:", contenidoTexto.value);
+  });
+}
+
+// --- Tab: Configuración ---
+const guardarProyectoBtn = document.getElementById("guardarProyectoBtn");
+if (guardarProyectoBtn) {
+  guardarProyectoBtn.addEventListener("click", () => {
+    const proyectoActivo = JSON.parse(localStorage.getItem("proyectoActivo"));
+    const proyectos = JSON.parse(localStorage.getItem("proyectos")) || [];
+
+    const index = proyectos.findIndex((p) => p.id === proyectoActivo.id);
+    const actualizado = {
+      ...proyectoActivo,
+      cartas,
+      variables,
+      contenido: contenidoTexto.value,
+    };
+
+    if (index >= 0) proyectos[index] = actualizado;
+    localStorage.setItem("proyectos", JSON.stringify(proyectos));
+    localStorage.setItem("proyectoActivo", JSON.stringify(actualizado));
+
+    alert("✅ Proyecto guardado correctamente");
+  });
+}

@@ -8,73 +8,72 @@
 </head>
 <body>
   <div class="app-container">
-    <aside class="sidebar">
-      <div class="sidebar-header">
-        <button onclick="window.location.href='index.html'" class="back-btn">⬅</button>
-        <h2 id="tituloProyecto">Proyecto</h2>
-      </div>
+<aside class="sidebar">
+  <div class="sidebar-tabs-vertical">
+    <button class="tab-btn-vertical active" data-tab="maqueta">🧩<span>Maqueta</span></button>
+    <button class="tab-btn-vertical" data-tab="cartas">🎴<span>Cartas</span></button>
+    <button class="tab-btn-vertical" data-tab="variables">🔢<span>Variables</span></button>
+    <button class="tab-btn-vertical" data-tab="contenido">📝<span>Contenido</span></button>
+    <button class="tab-btn-vertical" data-tab="config">⚙️<span>Config</span></button>
+  </div>
 
-      <nav class="sidebar-tabs">
-        <button class="tab-btn active" data-tab="maqueta">🧩 Maqueta</button>
-        <button class="tab-btn" data-tab="cartas">🎴 Cartas</button>
-        <button class="tab-btn" data-tab="variables">🔢 Variables</button>
-        <button class="tab-btn" data-tab="contenido">📝 Contenido</button>
-        <button class="tab-btn" data-tab="config">⚙️ Config</button>
-      </nav>
+  <div class="tab-content-vertical">
+    <!-- Maqueta -->
+    <div class="tab-panel-vertical active" id="tab-maqueta">
+      <h3>🎨 Maqueta de Carta</h3>
+      <label>
+        Nombre:
+        <input type="text" id="nombre" placeholder="Ej: Dragón Azul" />
+      </label>
+      <label>
+        Descripción:
+        <textarea id="descripcion" placeholder="Describe la carta..."></textarea>
+      </label>
+      <label>
+        Imagen (URL):
+        <input type="text" id="imagen" placeholder="https://..." />
+      </label>
+      <label>
+        Poder:
+        <input type="number" id="poder" min="0" max="999" placeholder="Ej: 85" />
+      </label>
+      <label>
+        Color de fondo:
+        <input type="color" id="colorFondo" value="#f1f2f6" />
+      </label>
+      <button id="resetBtn">Reiniciar</button>
+      <button id="exportBtn">Exportar</button>
+    </div>
 
-      <div class="tab-content">
-        <!-- Maqueta -->
-        <div class="tab-panel active" id="tab-maqueta">
-          <h3>Diseño de Carta</h3>
-          <label>
-            Nombre:
-            <input type="text" id="nombre" placeholder="Ej: Dragón Azul" />
-          </label>
-          <label>
-            Descripción:
-            <textarea id="descripcion" placeholder="Describe la carta..."></textarea>
-          </label>
-          <label>
-            Imagen (URL):
-            <input type="text" id="imagen" placeholder="https://..." />
-          </label>
-          <label>
-            Poder:
-            <input type="number" id="poder" min="0" max="999" placeholder="Ej: 85" />
-          </label>
-          <label>
-            Color de fondo:
-            <input type="color" id="colorFondo" value="#f1f2f6" />
-          </label>
-          <button id="resetBtn">Reiniciar</button>
-          <button id="exportBtn">Exportar</button>
-        </div>
+    <!-- Cartas -->
+    <div class="tab-panel-vertical" id="tab-cartas">
+      <h3>🗂 Gestión de Cartas</h3>
+      <button id="nuevaCartaBtn">+ Nueva Carta</button>
+      <div id="listaCartas"></div>
+    </div>
 
-        <!-- Cartas -->
-        <div class="tab-panel" id="tab-cartas">
-          <h3>Gestión de Cartas</h3>
-          <p>Aquí podrás crear, duplicar o eliminar cartas del proyecto.</p>
-        </div>
+    <!-- Variables -->
+    <div class="tab-panel-vertical" id="tab-variables">
+      <h3>🔢 Variables Globales</h3>
+      <div id="variablesContainer"></div>
+      <button id="nuevaVariableBtn">+ Agregar Variable</button>
+    </div>
 
-        <!-- Variables -->
-        <div class="tab-panel" id="tab-variables">
-          <h3>Variables Globales</h3>
-          <p>Aquí definirás variables personalizadas para todas las cartas.</p>
-        </div>
+    <!-- Contenido -->
+    <div class="tab-panel-vertical" id="tab-contenido">
+      <h3>📝 Contenido Narrativo</h3>
+      <textarea id="contenidoTexto" rows="10" placeholder="Historia o texto del juego..."></textarea>
+    </div>
 
-        <!-- Contenido -->
-        <div class="tab-panel" id="tab-contenido">
-          <h3>Contenido y Narrativa</h3>
-          <p>Usa esta sección para el lore o historia del juego.</p>
-        </div>
+    <!-- Config -->
+    <div class="tab-panel-vertical" id="tab-config">
+      <h3>⚙️ Configuración del Proyecto</h3>
+      <button onclick="window.location.href='index.html'">⬅ Volver al Home</button>
+      <button id="guardarProyectoBtn">💾 Guardar Proyecto</button>
+    </div>
+  </div>
+</aside>
 
-        <!-- Config -->
-        <div class="tab-panel" id="tab-config">
-          <h3>Configuración</h3>
-          <p>Opciones generales del proyecto.</p>
-        </div>
-      </div>
-    </aside>
 
     <main class="preview">
       <div id="carta" class="carta">
