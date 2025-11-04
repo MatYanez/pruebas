@@ -1,49 +1,60 @@
-// Cargar proyecto activo
-const proyectoActivo = JSON.parse(localStorage.getItem("proyectoActivo"));
-const projectName = document.getElementById("projectName");
+// === Referencias a elementos del DOM ===
+const nuevoProyectoBtn = document.getElementById("nuevoProyectoBtn");
+const listaProyectos = document.getElementById("listaProyectos");
 
-if (proyectoActivo && projectName) {
-  projectName.textContent = proyectoActivo.nombre;
-} else {
-  alert("No hay proyecto activo. Volviendo al inicio.");
-  window.location.href = "index.html";
+// === Cargar lista de proyectos al iniciar ===
+window.addEventListener("DOMContentLoaded", cargarProyectos);
+
+function cargarProyectos() {
+  const proyectos = JSON.parse(localStorage.getItem("proyectos")) || [];
+  listaProyectos.innerHTML = "";
+
+  if (proyectos.length === 0) {
+    listaProyectos.innerHTML = "<p style='text-align:center;color:#888;'>Aún no tienes proyectos.</p>";
+    return;
+  }
+
+  proyectos.forEach((proyecto) => {
+    const card = document.createElement("div");
+    card.className = "proyecto-card";
+    card.innerHTML = `
+      <h3>${proyecto.nombre}</h3>
+      <small>Creado el ${new Date(proyecto.fecha).toLocaleDateString()}</small>
+    `;
+
+    // 🔹 Al hacer clic, guarda el proyecto activo y redirige a project.html
+    card.addEventListener("click", () => {
+      localStorage.setItem("proyectoActivo", JSON.stringify(proyecto));
+      window.location.href = "project.html";
+    });
+
+    listaProyectos.appendChild(card);
+  });
 }
 
-// Tabs
-const tabs = document.querySelectorAll(".tab-btn");
-const sections = document.querySelectorAll(".tab-section");
+// === Crear nuevo proyecto ===
+nuevoProyectoBtn.addEventListener("click", () => {
+  const nombre = prompt("Nombre del nuevo proyecto:");
+  if (!nombre) return;
 
-tabs.forEach(tab => {
-  tab.addEventListener("click", () => {
-    tabs.forEach(t => t.classList.remove("active"));
-    sections.forEach(s => s.classList.remove("active"));
-
-    tab.classList.add("active");
-    const id = tab.dataset.tab;
-    document.getElementById(`tab-${id}`).classList.add("active");
-  });
-});
-
-// Guardar cambios
-document.getElementById("saveProjectBtn")?.addEventListener("click", () => {
-  const proyectos = JSON.parse(localStorage.getItem("proyectos")) || [];
-  const idx = proyectos.findIndex(p => p.id === proyectoActivo.id);
-
-  if (idx >= 0) {
-    proyectos[idx] = { ...proyectos[idx], fecha: new Date().toISOString() };
-    localStorage.setItem("proyectos", JSON.stringify(proyectos));
-    localStorage.setItem("proyectoActivo", JSON.stringify(proyectos[idx]));
-    alert("✅ Proyecto guardado correctamente.");
-  }
-});
-
-// Eliminar proyecto
-document.getElementById("deleteProjectBtn")?.addEventListener("click", () => {
-  if (!confirm("¿Seguro que deseas eliminar este proyecto?")) return;
+  const nuevo = {
+    id: Date.now(),
+    nombre,
+    fecha: new Date().toISOString(),
+    datos: {
+      maqueta: {},
+      cartas: [],
+      variables: [],
+      contenido: "",
+      config: {},
+    },
+  };
 
   const proyectos = JSON.parse(localStorage.getItem("proyectos")) || [];
-  const nuevos = proyectos.filter(p => p.id !== proyectoActivo.id);
-  localStorage.setItem("proyectos", JSON.stringify(nuevos));
-  localStorage.removeItem("proyectoActivo");
-  window.location.href = "index.html";
+  proyectos.push(nuevo);
+  localStorage.setItem("proyectos", JSON.stringify(proyectos));
+
+  // 🔹 Guardar como proyecto activo y abrirlo directamente
+  localStorage.setItem("proyectoActivo", JSON.stringify(nuevo));
+  window.location.href = "project.html";
 });
