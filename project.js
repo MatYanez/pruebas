@@ -101,7 +101,7 @@ function renderTipos() {
         </div>
         <div class="tipo-actions">
           <label class="icono-label" title="Seleccionar ícono">
-            <input type="file" accept="image/*" class="icono-input" data-index="${tipoIndex}" hidden>
+            <input type="file" accept="image/*" class="icono-input" data-tipo="${tipoIndex}" hidden>
             ${
               tipo.icono
                 ? `<img src="${tipo.icono}" class="icono-preview" alt="icono">`
@@ -117,7 +117,15 @@ function renderTipos() {
           .map(
             (cat, catIndex) => `
           <div class="categoria-item">
-            <input class="categoria-nombre" value="${cat}" placeholder="Categoría">
+            <label class="icono-label small">
+              <input type="file" accept="image/*" class="cat-icon-input" data-tipo="${tipoIndex}" data-cat="${catIndex}" hidden>
+              ${
+                cat.icono
+                  ? `<img src="${cat.icono}" class="icono-preview" alt="cat-icon">`
+                  : `<div class="icono-placeholder">📷</div>`
+              }
+            </label>
+            <input class="categoria-nombre" value="${cat.nombre}" placeholder="Categoría">
             <button class="delete-cat" data-tipo="${tipoIndex}" data-cat="${catIndex}">✖</button>
           </div>
         `
@@ -135,6 +143,7 @@ function renderTipos() {
 }
 
 
+
 // Eventos de los botones dentro de los tipos
 function attachTipoEvents() {
   // Eliminar tipo
@@ -150,8 +159,8 @@ function attachTipoEvents() {
   document.querySelectorAll(".add-cat").forEach((btn) => {
     btn.addEventListener("click", () => {
       const tipoIndex = parseInt(btn.dataset.index);
-      proyectoActivo.datos.variables[tipoIndex].categorias.push("");
-      guardarVariables();
+      proyectoActivo.datos.variables[tipoIndex].categorias.push({ nombre: "", icono: "" });
+      guardarVariables(false);
       renderTipos();
     });
   });
@@ -167,6 +176,41 @@ function attachTipoEvents() {
     });
   });
 
+  // Subir ícono de tipo
+  document.querySelectorAll(".icono-input").forEach((input) => {
+    input.addEventListener("change", (e) => {
+      const tipoIndex = parseInt(input.dataset.tipo);
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        proyectoActivo.datos.variables[tipoIndex].icono = ev.target.result;
+        guardarVariables(false);
+        renderTipos();
+      };
+      reader.readAsDataURL(file);
+    });
+  });
+
+  // Subir ícono de categoría
+  document.querySelectorAll(".cat-icon-input").forEach((input) => {
+    input.addEventListener("change", (e) => {
+      const tipoIndex = parseInt(input.dataset.tipo);
+      const catIndex = parseInt(input.dataset.cat);
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        proyectoActivo.datos.variables[tipoIndex].categorias[catIndex].icono = ev.target.result;
+        guardarVariables(false);
+        renderTipos();
+      };
+      reader.readAsDataURL(file);
+    });
+  });
+
   // Edición en vivo de nombres
   document.querySelectorAll(".tipo-nombre").forEach((input, index) => {
     input.addEventListener("input", () => {
@@ -177,31 +221,18 @@ function attachTipoEvents() {
 
   document.querySelectorAll(".categoria-nombre").forEach((input) => {
     input.addEventListener("input", () => {
-      const tipoIndex = Array.from(tiposContainer.querySelectorAll(".tipo-card")).indexOf(input.closest(".tipo-card"));
-      const catIndex = Array.from(input.closest(".categorias").querySelectorAll(".categoria-item")).indexOf(input.closest(".categoria-item"));
-      proyectoActivo.datos.variables[tipoIndex].categorias[catIndex] = input.value;
+      const tipoIndex = parseInt(
+        input.closest(".categoria-item").querySelector(".cat-icon-input").dataset.tipo
+      );
+      const catIndex = parseInt(
+        input.closest(".categoria-item").querySelector(".cat-icon-input").dataset.cat
+      );
+      proyectoActivo.datos.variables[tipoIndex].categorias[catIndex].nombre = input.value;
       guardarVariables(false);
     });
   });
-
-    // Subir ícono
-  document.querySelectorAll(".icono-input").forEach((input) => {
-    input.addEventListener("change", (e) => {
-      const tipoIndex = parseInt(input.dataset.index);
-      const file = e.target.files[0];
-      if (!file) return;
-
-      const reader = new FileReader();
-      reader.onload = (ev) => {
-        proyectoActivo.datos.variables[tipoIndex].icono = ev.target.result; // Guardamos base64
-        guardarVariables(false);
-        renderTipos();
-      };
-      reader.readAsDataURL(file);
-    });
-  });
-
 }
+
 
 // Guardar variables en localStorage
 function guardarVariables(showAlert = true) {
