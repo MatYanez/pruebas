@@ -201,7 +201,6 @@ button {
   background-color: #007aff;
   color: white;
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0, 122, 255, 0.3);
   transition: all 0.2s ease;
 }
 
