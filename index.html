@@ -3,296 +3,53 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-  <title>Hero Carousel MD3 Ajustado</title>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --radius: 28px;
-      --gap: 16px;
-      --t-card:30px; /*titulo de cards*/
-    }
-
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background: #f5f5f5;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-    }
-
-    .carousel {
-      position: relative;
-      overflow: hidden;
-      width: 100%;
-      height: 350px;
-      margin: 0 auto;
-    }
-
-    .carrusel {
-      overflow: hidden;
-      padding: 0 14px;
-    }
-
-    .carousel-track {
-      display: flex;
-      gap: var(--gap);
-      transition: transform 600ms cubic-bezier(0.22, 1, 0.36, 1);
-      height: 100%;
-      scroll-snap-type: x mandatory;
-      scroll-behavior: smooth;
-    }
-
-    .card {
-      position: relative;
-      flex: 0 0 80%;
-      border-radius: var(--radius);
-      overflow: hidden;
-      background: #ddd;
-      transition: flex 0.5s ease-in-out;
-      cursor: pointer;
-    }
-
-    .card.next {
-      flex: 0 0 15%;
-    }
-
-    .card img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center;
-      pointer-events: none;
-    }
-
-    .overlay {
-      position: absolute;
-      bottom: 0;
-      width: 100%;
-      background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);
-      color: white;
-      padding: 2rem;
-      font-size: var(--t-card);
-      pointer-events: none;
-      transition: opacity 0.3s ease;
-      opacity: 1;
-
-    }
-
-    .icon-arrow {
-  opacity: 0;
-
-}
-
-
-
-
-
-
-
-
-
-    
-
-    @media (max-width: 967px) {
-  .card.next .overlay,
-  .card:not(.active) .overlay {
-    opacity: 0;
-  }
-}
-
-@media (max-width: 967px) {
-  .card.next {
-      flex: 0 0 17%;
-    }
-    }
-
-
-    @media (min-width: 968px) {
-  .carousel {
-    padding-left: 0;
-  }
-  .carousel-track {
-    gap: var(--gap);
-  }
-  .card, .card.next {
-    flex: 1 1 0%;
-  }
-  .overlay {
-    opacity: 1 !important;
-  }
-  .card img {
-    transition: transform 0.8s ease;
-
-  }
-  .card:hover img {
-    transform: scale(1.2);
-  }
-  .icon-arrow {
-  opacity: 0;
-  transform: translateX(-5px);
-  display: inline-block;
-  transition: opacity 0.3s ease, transform 0.3s ease;
-}
-
-.card:hover .icon-arrow {
-  opacity: 1;
-  transform: translateX(0);
-}
-.text{
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-}
-
-
-
-
-  </style>
+  <title>Generador de Cartas</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <div class="app-container">
+    <aside class="control-panel">
+      <h2>🎴 Generador de Carta</h2>
+      <label>
+        Nombre:
+        <input type="text" id="nombre" placeholder="Ej: Dragón Azul" />
+      </label>
 
-<section class="carrusel">
-  <h1 style="font-size: 57px;">Nuevas </h1>
-  <div class="carousel" id="carousel">
-    <div class="carousel-track" id="track">
-      <div class="card active">
-        <img src="img/blog-139.jpg" alt="">
-        <div class="overlay">
-          <div class="text">Artículo 1 <i class="fa fa-angle-right icon-arrow"></i></div>
+      <label>
+        Descripción:
+        <textarea id="descripcion" placeholder="Describe la carta..."></textarea>
+      </label>
+
+      <label>
+        Imagen (URL):
+        <input type="text" id="imagen" placeholder="https://..." />
+      </label>
+
+      <label>
+        Poder:
+        <input type="number" id="poder" min="0" max="999" placeholder="Ej: 85" />
+      </label>
+
+      <label>
+        Color de fondo:
+        <input type="color" id="colorFondo" value="#f1f2f6" />
+      </label>
+
+      <button id="resetBtn">Reiniciar</button>
+    </aside>
+
+    <main class="preview">
+      <div id="carta" class="carta">
+        <div class="carta-imagen"></div>
+        <div class="carta-info">
+          <h3 class="carta-nombre">Dragón Azul</h3>
+          <p class="carta-descripcion">Una criatura legendaria del cielo.</p>
+          <div class="carta-poder">⚡ 85</div>
         </div>
       </div>
-      <div class="card next">
-        <img src="img/blog-140.jpg" alt="">
-        <div class="overlay">
-          <div class="text">Artículo 2 <i class="fa fa-angle-right icon-arrow"></i></div>
-        </div>
-      </div>
-      <div class="card">
-        <img src="img/blog-141.jpg" alt="">
-        <div class="overlay">
-          <div class="text">Artículo 3 <i class="fa fa-angle-right icon-arrow"></i></div>
-        </div>
-      </div>
-      <div class="card">
-        <img src="img/blog-142.jpg" alt="">
-        <div class="overlay">
-          <div class="text">Artículo 4 <i class="fa fa-angle-right icon-arrow"></i></div>
-        </div>
-      </div>
-      <div class="card">
-        <img src="img/blog-143.jpg" alt="">
-        <div class="overlay">
-   <div class="text">Artículo 5 <i class="fa fa-angle-right icon-arrow"></i></div>
-        </div>
-      </div>
-      <div class="card">
-        <img src="img/blog-144.jpg" alt="">
-        <div class="overlay">
-          <div class="text">Artículo 6 <i class="fa fa-angle-right icon-arrow"></i></div>
-        </div>
-      </div>
-    </div>
+    </main>
   </div>
-</section>
 
-<script>
-  const carousel = document.getElementById('carousel');
-  const track = document.getElementById('track');
-  const cards = Array.from(track.children);
-  let current = 0;
-
-  function updateCarousel() {
-    cards.forEach(card => card.classList.remove('active', 'next'));
-
-    if (current === cards.length - 1) {
-      cards[current - 1]?.classList.add('next');
-      cards[current]?.classList.add('active');
-    } else {
-      cards[current]?.classList.add('active');
-      cards[current + 1]?.classList.add('next');
-    }
-
-    const gap = parseInt(getComputedStyle(track).gap) || 16;
-    const cardWidth = track.offsetWidth * 0.8 + gap;
-    const offset = current >= cards.length - 1
-      ? (current - 1) * cardWidth
-      : current * cardWidth;
-
-    track.style.transform = `translateX(-${offset}px)`;
-  }
-
-  function bounce(direction) {
-    const bounceDistance = 20;
-    const bounceTime = 150;
-
-    track.style.transition = `transform ${bounceTime}ms ease-out`;
-    const currentTransform = track.style.transform.match(/-?\d+/g);
-    const currentOffset = currentTransform ? parseInt(currentTransform[0]) : 0;
-
-    const bounceOffset = direction === 'left'
-      ? currentOffset - bounceDistance
-      : currentOffset + bounceDistance;
-
-    track.style.transform = `translateX(-${bounceOffset}px)`;
-
-    setTimeout(() => {
-      track.style.transition = `transform 300ms ease-out`;
-      track.style.transform = `translateX(-${currentOffset}px)`;
-    }, bounceTime);
-  }
-
-  function nextCard() {
-    if (current < cards.length - 1) {
-      current++;
-      updateCarousel();
-    } else {
-      bounce('left');
-    }
-  }
-
-  function prevCard() {
-    if (current > 0) {
-      current--;
-      updateCarousel();
-    } else {
-      bounce('right');
-    }
-  }
-
-  let startX = 0;
-  let startY = 0;
-  let isMoving = false;
-
-  carousel.addEventListener('touchstart', e => {
-    startX = e.touches[0].clientX;
-    startY = e.touches[0].clientY;
-    isMoving = false;
-  }, { passive: true });
-
-  carousel.addEventListener('touchmove', e => {
-    const dx = e.touches[0].clientX - startX;
-    const dy = e.touches[0].clientY - startY;
-    if (Math.abs(dx) > Math.abs(dy)) {
-      e.preventDefault();
-      isMoving = true;
-    }
-  }, { passive: false });
-
-  carousel.addEventListener('touchend', e => {
-    if (!isMoving) return;
-    const endX = e.changedTouches[0].clientX;
-    if (startX - endX > 50) nextCard();
-    else if (endX - startX > 50) prevCard();
-  });
-
-  window.addEventListener('resize', updateCarousel);
-  window.addEventListener('load', updateCarousel);
-</script>
-
+  <script src="script.js"></script>
 </body>
 </html>
